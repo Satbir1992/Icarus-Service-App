@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <RootNamespace>Icarus_Service_App</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Syncfusion.Shared.WPF" Version="20.3.0.50" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Xceed.Wpf.Samples.SampleData">
+      <HintPath>..\..\..\Downloads\wpftoolkit-master\wpftoolkit-master\ExtendedWPFToolkitSolution\Libs\Xceed.Wpf.Samples.SampleData.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

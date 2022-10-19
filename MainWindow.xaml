@@ -1,0 +1,77 @@
+﻿<Window x:Class="Icarus_Service_App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        xmlns:local="clr-namespace:Icarus_Service_App"
+        mc:Ignorable="d"
+      WindowStyle="None" ResizeMode="NoResize" Height="700" Width="998">
+    <Grid Margin="0,0,0,647" Background="#0f0f2d">
+        <TextBlock Text="Icarus Service App"
+               Foreground="White"
+                   FontWeight="Bold"
+                   FontSize="16px"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"
+               />
+        <StackPanel Margin="0,48,758,-119" Background="#0f0f2d">
+            <Label x:Name="LabelCustomerName" Content="Customer Name:" HorizontalAlignment="Left" FontSize="14" Width="122" Foreground="#FFFBFBFB" FontWeight="Bold"/>
+            <TextBox x:Name="TextBoxName" Width="214" Height="30" HorizontalAlignment="Left" Margin="5 0"/>
+            <Label x:Name="LabelModel" Content="Drone Model:" FontSize="14" Width="122" Foreground="#FFFBFBFB" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <TextBox x:Name="TextBoxModel" Width="214" Height="30" HorizontalAlignment="Left" Margin="5 0"/>
+
+        </StackPanel>
+        <StackPanel Margin="240,48,518,-119" Background="#0f0f2d">
+            <Label x:Name="LabelServiceProblem" Content="Service Problem:" FontSize="14" Width="122" Foreground="#FFFBFBFB" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <TextBox x:Name="TextBoxProblem" AcceptsReturn="True" Width="228" Height="87" TextWrapping="Wrap" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" />
+        </StackPanel>
+        <Grid Margin="0,171,0,-645" Background="#0f0f2d">
+            <ListView x:Name="ListViewExpress" Margin="2,100,5,232">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Client Name" Width="200"/>
+                        <GridViewColumn Header="Drone Model" Width="200"/>
+                        <GridViewColumn Header="Service Problem" Width="300"/>
+                        <GridViewColumn Header="Service Cost" Width="200"/>
+                        <GridViewColumn Header="Service Tag" Width="100"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Label x:Name="LabelExpQueue" Content="Express Service Queue" FontSize="14" Foreground="#FFFBFBFB" FontWeight="Bold" Margin="3,73,831,428"/>
+            <Label x:Name="LabelRegQueue" Content="Regular Service Queue" FontSize="14" Foreground="#FFFBFBFB" FontWeight="Bold" Margin="0,295,834,199"/>
+            <ListView x:Name="ListViewRegular" Margin="2,322,5,10">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Client Name" Width="200"/>
+                        <GridViewColumn Header="Drone Model" Width="200"/>
+                        <GridViewColumn Header="Service Problem" Width="300"/>
+                        <GridViewColumn Header="Service Cost" Width="200"/>
+                        <GridViewColumn Header="Service Tag" Width="100"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <GroupBox x:Name="GroupService" Header="Service Type" Margin="1,7,781,455" Foreground="White" FontSize="14" FontWeight="Bold">
+                <Grid>
+                    <RadioButton x:Name="ButtonRegular" Content="Regular" Foreground="White"
+                                 FontSize="14" FontWeight="Bold" HorizontalAlignment="Left">
+                    </RadioButton>
+                    <RadioButton x:Name="ButtonExpress" Content="Express" Foreground="White" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold"
+                                Margin="0 0 50 10" />
+                </Grid>
+            </GroupBox>
+            <Label x:Name="LabelCost" Content="Service Cost:" FontSize="14" Foreground="#FFFBFBFB" FontWeight="Bold" Margin="243,-7,633,505"/>
+            <TextBox x:Name="TextBoxCost" Margin="247,19,527,478"/>
+            <Label x:Name="LabelTag" Content="Service Tag:" FontSize="14" Foreground="#FFFBFBFB" FontWeight="Bold" Margin="241,43,635,455"/>
+            <syncfusion:UpDown Name="upDown" Value="100" Margin="247,67,527,432"/>
+            <Button x:Name="ButtonAdd" Content="Add Drone for Service" HorizontalAlignment="Left" Margin="485,17,0,0" VerticalAlignment="Top" Height="73" Width="154" FontSize="14" FontWeight="Bold"/>
+            <Button x:Name="ButtonExpress1" Content="Express Service Completed" HorizontalAlignment="Left" Margin="806,70,0,0" VerticalAlignment="Top" Height="22" FontSize="14" Width="185" FontWeight="Bold"/>
+            <Button x:Name="ButtonRegular1" Content="Regular Service Completed" HorizontalAlignment="Left" Margin="806,298,0,0" VerticalAlignment="Top" Height="22" FontSize="14" Width="185" FontWeight="Bold"/>
+        </Grid>
+        <Grid Background="#0f0f2d" Margin="480,48,0,-119">
+            <Label x:Name="LabelListBox" Content="Service Completed" FontSize="14" Foreground="#FFFBFBFB" FontWeight="Bold" Margin="0,0,361,95"/>
+            <ListBox Margin="5,28,5,0"/>
+
+        </Grid>
+    </Grid>
+</Window>
