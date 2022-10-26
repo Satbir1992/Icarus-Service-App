@@ -17,17 +17,19 @@
                />
         <StackPanel Margin="0,48,758,-119" Background="#0f0f2d">
             <Label x:Name="LabelCustomerName" Content="Customer Name:" HorizontalAlignment="Left" FontSize="14" Width="122" Foreground="#FFFBFBFB" FontWeight="Bold"/>
-            <TextBox x:Name="TextBoxName" Width="214" Height="30" HorizontalAlignment="Left" Margin="5 0"/>
+            <TextBox x:Name="TextBoxName" Text="{Binding Mode=OneWay}" Width="214" Height="30" HorizontalAlignment="Left" Margin="5 0"/>
             <Label x:Name="LabelModel" Content="Drone Model:" FontSize="14" Width="122" Foreground="#FFFBFBFB" FontWeight="Bold" HorizontalAlignment="Left"/>
             <TextBox x:Name="TextBoxModel" Width="214" Height="30" HorizontalAlignment="Left" Margin="5 0"/>
 
         </StackPanel>
         <StackPanel Margin="240,48,518,-119" Background="#0f0f2d">
             <Label x:Name="LabelServiceProblem" Content="Service Problem:" FontSize="14" Width="122" Foreground="#FFFBFBFB" FontWeight="Bold" HorizontalAlignment="Left"/>
-            <TextBox x:Name="TextBoxProblem" AcceptsReturn="True" Width="228" Height="87" TextWrapping="Wrap" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" />
+            <TextBox x:Name="TextBoxProblem" AcceptsReturn="True" Width="228" Height="87" TextWrapping="Wrap" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                
+            </TextBox>
         </StackPanel>
         <Grid Margin="0,171,0,-645" Background="#0f0f2d">
-            <ListView x:Name="ListViewExpress" Margin="2,100,5,232" SelectionChanged="ListViewExpress_SelectionChanged" >
+            <ListView x:Name="ListViewExpress" Margin="2,100,5,232" PreviewMouseLeftButtonDown="ListViewExpress_PreviewMouseLeftButtonDown" >
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Client Name" DisplayMemberBinding="{Binding Path= client_Name}" Width="200" />

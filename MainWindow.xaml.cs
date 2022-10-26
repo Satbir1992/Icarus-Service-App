@@ -154,17 +154,19 @@ namespace Icarus_Service_App
         }
         public void ClearTextBox()
         {
-            TextBoxName.Text.Equals("");
-            TextBoxCost.Text.Equals("");
-            TextBoxProblem.Text.Equals("");
-            TextBoxModel.Text.Equals("");
+            TextBoxName.Clear();
+            TextBoxCost.Clear();
+            TextBoxProblem.Clear();
+            TextBoxModel.Clear();
         }
 
-        private void ListViewExpress_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListViewExpress_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Drone selected = (Drone)ListViewExpress.SelectedItem;
-                       
-            
+
+           // Drone select = (Drone)ListViewExpress.SelectedItem;
+            TextBoxName.Text = string.Join("", ListViewExpress.SelectedItems.OfType<string>().Select(x => x.ToString()).ToArray());
+
+
         }
     }
 
