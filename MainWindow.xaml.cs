@@ -61,6 +61,7 @@ namespace Icarus_Service_App
                 regularQueue.Enqueue(addDrone);
                 DisplayRegularQueue();
             }
+            ClearTextBox();
          }
 
         #region Display
@@ -151,9 +152,18 @@ namespace Icarus_Service_App
             }
             DisplayRegularQueue();
         }
+        public void ClearTextBox()
+        {
+            TextBoxName.Text.Equals("");
+            TextBoxCost.Text.Equals("");
+            TextBoxProblem.Text.Equals("");
+            TextBoxModel.Text.Equals("");
+        }
 
         private void ListViewExpress_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Drone selected = (Drone)ListViewExpress.SelectedItem;
+                       
             
         }
     }
