@@ -16,7 +16,7 @@ namespace Icarus_Service_App
 
        public Drone()
         {
-
+        service_Tag = 100;
         }
         public Drone(string aclient_Name, string adrone_Model, string aservice_Problem, double aservice_Cost, int aservice_Tag)
         {

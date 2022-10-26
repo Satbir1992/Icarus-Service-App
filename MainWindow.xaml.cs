@@ -48,9 +48,12 @@ namespace Icarus_Service_App
             addDrone.setModel(TextBoxModel.Text);
             addDrone.setCost(Convert.ToDouble(TextBoxCost.Text));
             addDrone.setTag(Convert.ToInt32(upDown.Value));
+            upDown.Value = addDrone.getTag()+10;
             if(GetServicePriority().Equals("Express"))
             {
+                addDrone.setCost(addDrone.getCost()+(addDrone.getCost()*15)/100);
                 expressQueue.Enqueue(addDrone);
+                
                 DisplayExpressQueue();
             }
             else 
@@ -64,16 +67,15 @@ namespace Icarus_Service_App
         public void DisplayExpressQueue()
         {
 
-            ListViewExpress.Items.Clear();
+           ListViewExpress.Items.Clear();
             foreach (Drone information in expressQueue)
             {
-                double charge = (information.getCost() * 15) / 100;
                 var row = new
                 {
                     client_Name = information.getName(),
                     drone_Model = information.getModel(),
                     service_Problem = information.getProblem(),
-                    service_Cost = information.getCost()+charge,
+                    service_Cost = information.getCost(),
                     service_Tag = information.getTag()
                 };
                 ListViewExpress.Items.Add(row);
@@ -101,7 +103,8 @@ namespace Icarus_Service_App
             FinishedListBox.Items.Clear();
             foreach(var serviceComlpeted in finishedList)
             {
-                FinishedListBox.Items.Add("Client Name: "+serviceComlpeted.getName() + "\t\t Amount Due: " + serviceComlpeted.getCost());  
+                FinishedListBox.Items.Add("Client Name: "+serviceComlpeted.getName() + "\t\t Amount Due: " 
+                    + serviceComlpeted.getCost());  
             }
         }
            
@@ -147,6 +150,11 @@ namespace Icarus_Service_App
                DisplayList();
             }
             DisplayRegularQueue();
+        }
+
+        private void ListViewExpress_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
         }
     }
 
