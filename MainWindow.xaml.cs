@@ -44,33 +44,110 @@ namespace Icarus_Service_App
         {
             Drone addDrone = new Drone();
             addDrone.setName(TextBoxName.Text);
-            addDrone.setCost(Convert.ToDouble(TextBoxCost.Text));
             addDrone.setProblem(TextBoxProblem.Text);
             addDrone.setModel(TextBoxModel.Text);
-            addDrone.setTag(100);
-            expressQueue.Enqueue(addDrone);
-            DisplayQueue();
+            addDrone.setCost(Convert.ToDouble(TextBoxCost.Text));
+            addDrone.setTag(Convert.ToInt32(upDown.Value));
+            if(GetServicePriority().Equals("Express"))
+            {
+                expressQueue.Enqueue(addDrone);
+                DisplayExpressQueue();
+            }
+            else 
+            {
+                regularQueue.Enqueue(addDrone);
+                DisplayRegularQueue();
+            }
          }
-        public void DisplayQueue()
-        {
-            ListViewExpress.Items.Clear();
-            foreach(Drone information in expressQueue) {
 
-                var row = new { Client_Name=information.getName(), Drone_Model=information.getModel(), Service_Problem=information.getProblem(),
-                    Service_Cost = information.getCost(),Service_Tag = information.getTag()};
-                ListViewExpress.Items.Add(row); 
+        #region Display
+        public void DisplayExpressQueue()
+        {
+
+            ListViewExpress.Items.Clear();
+            foreach (Drone information in expressQueue)
+            {
+                double charge = (information.getCost() * 15) / 100;
+                var row = new
+                {
+                    client_Name = information.getName(),
+                    drone_Model = information.getModel(),
+                    service_Problem = information.getProblem(),
+                    service_Cost = information.getCost()+charge,
+                    service_Tag = information.getTag()
+                };
+                ListViewExpress.Items.Add(row);
             }
         }
-        private void setRadioButton(int serviceType)
+        public void DisplayRegularQueue()
         {
+            ListViewRegular.Items.Clear();
+            foreach (Drone drone in regularQueue)
+            {
+                var row = new
+                {
+                    client_Name = drone.getName(),
+                    drone_Model = drone.getModel(),
+                    service_Problem = drone.getProblem(),
+                    service_Cost = drone.getCost(),
+                    service_Tag = drone.getTag()
+                };
+                ListViewRegular.Items.Add(row);
+
+            }
+        }
+        public void DisplayList()
+        {
+            FinishedListBox.Items.Clear();
+            foreach(var serviceComlpeted in finishedList)
+            {
+                FinishedListBox.Items.Add("Client Name: "+serviceComlpeted.getName() + "\t\t Amount Due: " + serviceComlpeted.getCost());  
+            }
+        }
+           
+        #endregion Display
+
+        #region Service Priority
+        private string GetServicePriority()
+        {
+            string serviceType = "";
             foreach(RadioButton rb in ServiceOption.Children.OfType<RadioButton>())
             {
                 if(rb.IsChecked == true)
                 {
-
+                    serviceType = rb.Content.ToString();
                 }
+                else
+                {
+                    serviceType = "";
+                }
+
             }
+            return serviceType;
+        }
+        #endregion Service Priority
+
+        private void ButtonExpress1_Click(object sender, RoutedEventArgs e)
+        {
+            if(expressQueue.Count != 0)
+            {
+                finishedList.Add(expressQueue.Dequeue());
+                ListViewExpress.Items.RemoveAt(0);
+                DisplayList();   
+            }
+            DisplayExpressQueue();
+        }
+
+        private void ButtonRegular1_Click(object sender, RoutedEventArgs e)
+        {
+            if(regularQueue.Count != 0)
+            {
+               finishedList.Add(regularQueue.Dequeue());
+               ListViewRegular.Items.RemoveAt(0);
+               DisplayList();
+            }
+            DisplayRegularQueue();
         }
     }
-   
+
 }

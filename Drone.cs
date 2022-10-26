@@ -14,7 +14,7 @@ namespace Icarus_Service_App
         private double service_Cost;
         private int service_Tag;
 
-        public Drone()
+       public Drone()
         {
 
         }
@@ -66,9 +66,5 @@ namespace Icarus_Service_App
         {
             return service_Tag;
         }
-        public string DisplayNameCost()
-        {
-            return client_Name + "     "+service_Problem;
-        }
-    }
+}
 }
