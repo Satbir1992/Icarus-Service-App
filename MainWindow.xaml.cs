@@ -160,13 +160,25 @@ namespace Icarus_Service_App
             TextBoxModel.Clear();
         }
 
-        private void ListViewExpress_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+       private void FinishedListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            int currentItem = FinishedListBox.SelectedIndex;
+            finishedList.RemoveAt(currentItem);
+            DisplayList();
+        }
 
-           // Drone select = (Drone)ListViewExpress.SelectedItem;
-            TextBoxName.Text = string.Join("", ListViewExpress.SelectedItems.OfType<string>().Select(x => x.ToString()).ToArray());
+        private void ListViewExpress_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int select = ListViewExpress.SelectedIndex;
+            TextBoxName.Text = expressQueue.ElementAt(select).getName();
+            TextBoxProblem.Text = expressQueue.ElementAt(select).getProblem();
+        }
 
-
+        private void ListViewRegular_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int selected = ListViewRegular.SelectedIndex;
+            TextBoxName.Text = regularQueue.ElementAt(selected).getName();
+            TextBoxProblem.Text = regularQueue.ElementAt(selected).getProblem();
         }
     }
 
