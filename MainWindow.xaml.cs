@@ -53,7 +53,6 @@ namespace Icarus_Service_App
             {
                 addDrone.setCost(addDrone.getCost()+(addDrone.getCost()*15)/100);
                 expressQueue.Enqueue(addDrone);
-                
                 DisplayExpressQueue();
             }
             else 
