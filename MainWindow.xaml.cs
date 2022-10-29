@@ -42,6 +42,9 @@ namespace Icarus_Service_App
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
+        if(!string.IsNullOrEmpty(TextBoxName.Text) && !string.IsNullOrEmpty(TextBoxModel.Text)
+                &&!string.IsNullOrEmpty(TextBoxProblem.Text) &&!string.IsNullOrEmpty(TextBoxCost.Text) && !string.IsNullOrEmpty(GetServicePriority()))
+            {
             Drone addDrone = new Drone();
             addDrone.setName(TextBoxName.Text);
             addDrone.setProblem(TextBoxProblem.Text);
@@ -55,12 +58,22 @@ namespace Icarus_Service_App
                 expressQueue.Enqueue(addDrone);
                 DisplayExpressQueue();
             }
-            else 
+            else if(GetServicePriority().Equals("Regular")) 
             {
                 regularQueue.Enqueue(addDrone);
                 DisplayRegularQueue();
             }
+            else
+            {
+                    MessageBar.Text = "Please Select the Service Type";
+            }
             ClearTextBox();
+            MessageBar.Text = GetServicePriority();
+            }
+            else
+            {
+                MessageBar.Text = GetServicePriority();
+            }
          }
 
         #region Display
@@ -68,7 +81,7 @@ namespace Icarus_Service_App
         {
 
            ListViewExpress.Items.Clear();
-            foreach (Drone information in expressQueue)
+           foreach (Drone information in expressQueue)
             {
                 var row = new
                 {
@@ -118,15 +131,11 @@ namespace Icarus_Service_App
             {
                 if(rb.IsChecked == true)
                 {
-                    serviceType = rb.Content.ToString();
+                serviceType = rb.Name.ToString();
                 }
-                else
-                {
-                    serviceType = "";
-                }
-
             }
             return serviceType;
+            
         }
         #endregion Service Priority
 
