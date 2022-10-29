@@ -22,54 +22,46 @@ namespace Icarus_Service_App
             service_Cost = 0;
         service_Tag = 100;
         }
-        public Drone(string aclient_Name, string adrone_Model, string aservice_Problem, double aservice_Cost, int aservice_Tag)
-        {
-            client_Name = aclient_Name;
-            drone_Model = adrone_Model;
-            service_Problem = aservice_Problem;
-            service_Cost = aservice_Cost;
-            service_Tag = aservice_Tag;
-        }
-        public void setName(string aClientName)
+        
+        public void SetName(string aClientName)
         {
             client_Name=aClientName;
         }
-        public string getName()
+        public string GetName()
         {
             return client_Name;
         }
-        public void setModel(string aDroneModel)
+        public void SetModel(string aDroneModel)
         {
             drone_Model = aDroneModel;
         }
-        public string getModel()
+        public string GetModel()
         {
             return drone_Model;
         }
-        public void setProblem(string aServiceProblem)
+        public void SetProblem(string aServiceProblem)
         {
             service_Problem = aServiceProblem;
         }
-        public string getProblem()
+        public string GetProblem()
         {
             return service_Problem;
         }
-        public void setCost(double aServiceCost)
+        public void SetCost(double aServiceCost)
         {
             service_Cost=aServiceCost;
         }
-        public double getCost()
+        public double GetCost()
         {
             return (service_Cost);
         }
-        public void setTag(int aServiceTag)
+        public void SetTag(int aServiceTag)
         {
             service_Tag=aServiceTag;
         }
-        public int getTag()
+        public int GetTag()
         {
             return service_Tag;
         }
-        
 }
 }
