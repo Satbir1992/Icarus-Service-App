@@ -54,7 +54,7 @@ namespace Icarus_Service_App
             addDrone.SetProblem(TextBoxProblem.Text);
             addDrone.SetModel(TextBoxModel.Text);
             addDrone.SetCost(Convert.ToDouble(TextBoxCost.Text));
-            addDrone.SetTag(Convert.ToInt32(upDown.Value)+ TagIncrement());
+            addDrone.SetTag(Convert.ToInt32(upDown.Value));
             upDown.Value = addDrone.GetTag()+TagIncrement();
             if(GetServicePriority().Equals("Express"))
             {
@@ -284,36 +284,34 @@ namespace Icarus_Service_App
 
         private void TextBoxCost_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            bool approvedDecimalPoint = false;
-            
-            if (e.Text == ".")
+
+
+
+
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
             {
-               
-                if (!((TextBox)sender).Text.Contains("."))
+                e.Handled = false;
+                string inText = TextBoxCost.Text; //My Input TextBox from XAML
+                int decPointIndex = inText.IndexOf('.');
+                if (decPointIndex > 0 && ((inText.Length - (decPointIndex + 1)) >= 2))
+                {
+
+                    TextBoxCost.Text = inText.Substring(0, decPointIndex + 3);
+                    upDown.Focus();
                     
-                approvedDecimalPoint = true;
+                }
+                
             }
-            if (!(char.IsDigit(e.Text, e.Text.Length - 1) || approvedDecimalPoint))
+               
+
+            else
             {
                 e.Handled = true;
-                string inText = TextBoxCost.Text; //My Input TextBox from XAML
-                int decPointIndex = inText.IndexOf('.');
-                if (decPointIndex > 0 && ((inText.Length - (decPointIndex + 1)) > 2))
-                    TextBoxCost.Text = inText.Substring(0, decPointIndex + 3);
+                MessageBar.Text = "Else Statement";
             }
-                
+               
 
-            /*
-            Regex regex = new Regex("^[0-9]");
-            if(regex.IsMatch(TextBoxCost.Text))
-            {
-                string inText = TextBoxCost.Text; //My Input TextBox from XAML
-                int decPointIndex = inText.IndexOf('.');
-                if (decPointIndex > 0 && ((inText.Length - (decPointIndex + 1)) > 2))
-                    TextBoxCost.Text = inText.Substring(0, decPointIndex + 3);
-            }
-            
-            */
         }
     }
 

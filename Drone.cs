@@ -53,7 +53,7 @@ namespace Icarus_Service_App
         }
         public double GetCost()
         {
-            return (service_Cost);
+            return service_Cost = Math.Round(service_Cost,2);
         }
         public void SetTag(int aServiceTag)
         {
