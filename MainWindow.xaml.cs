@@ -45,7 +45,8 @@ namespace Icarus_Service_App
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
         if(!string.IsNullOrEmpty(TextBoxName.Text) && !string.IsNullOrEmpty(TextBoxModel.Text)
-                &&!string.IsNullOrEmpty(TextBoxProblem.Text) &&!string.IsNullOrEmpty(TextBoxCost.Text) && !string.IsNullOrEmpty(GetServicePriority()))
+                &&!string.IsNullOrEmpty(TextBoxProblem.Text) &&!string.IsNullOrEmpty(TextBoxCost.Text) && 
+                !string.IsNullOrEmpty(GetServicePriority()))
             {
             try
              {
@@ -310,9 +311,8 @@ namespace Icarus_Service_App
                 e.Handled = true;
                 MessageBar.Text = "Else Statement";
             }
-               
-
         }
+        
     }
 
 }
