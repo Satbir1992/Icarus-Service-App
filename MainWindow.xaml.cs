@@ -284,17 +284,36 @@ namespace Icarus_Service_App
 
         private void TextBoxCost_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("^\\d{1,4}(\\.\\d{1,2})?$");
-            if(TextBoxCost.Text != null)
+            bool approvedDecimalPoint = false;
+            
+            if (e.Text == ".")
             {
-                e.Handled = !regex.IsMatch(TextBoxCost.Text.Insert(TextBoxCost.SelectionStart, e.Text));
-                MessageBar.Text = "only numbers allowed";
+               
+                if (!((TextBox)sender).Text.Contains("."))
+                    
+                approvedDecimalPoint = true;
             }
-            else
+            if (!(char.IsDigit(e.Text, e.Text.Length - 1) || approvedDecimalPoint))
             {
-                MessageBar.Text = "";
+                e.Handled = true;
+                string inText = TextBoxCost.Text; //My Input TextBox from XAML
+                int decPointIndex = inText.IndexOf('.');
+                if (decPointIndex > 0 && ((inText.Length - (decPointIndex + 1)) > 2))
+                    TextBoxCost.Text = inText.Substring(0, decPointIndex + 3);
+            }
+                
+
+            /*
+            Regex regex = new Regex("^[0-9]");
+            if(regex.IsMatch(TextBoxCost.Text))
+            {
+                string inText = TextBoxCost.Text; //My Input TextBox from XAML
+                int decPointIndex = inText.IndexOf('.');
+                if (decPointIndex > 0 && ((inText.Length - (decPointIndex + 1)) > 2))
+                    TextBoxCost.Text = inText.Substring(0, decPointIndex + 3);
             }
             
+            */
         }
     }
 
