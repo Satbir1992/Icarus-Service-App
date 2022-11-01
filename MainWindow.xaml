@@ -6,7 +6,7 @@
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         xmlns:local="clr-namespace:Icarus_Service_App"
         mc:Ignorable="d"
-      WindowStyle="None" ResizeMode="NoResize" Height="700" Width="998" Loaded="Window_Loaded" >
+      WindowStyle="None" ResizeMode="NoResize" Height="700" Width="998" >
     <Grid Margin="0,0,0,647" Background="#0f0f2d">
         <TextBlock Text="Icarus Service App"
                Foreground="White"

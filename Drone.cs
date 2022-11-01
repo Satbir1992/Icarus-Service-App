@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Icarus_Service_App
 {
+    //6.1	Create a separate class file to hold the data items of the Drone. Use separate getter and setter methods, ensure the attributes are private
+    //and the accessor methods are public. Add a display method that returns a string for Client Name and Service Cost. Add suitable code to the
+    //Client Name and Service Problem accessor methods so the data is formatted as Title case or Sentence case. Save the class as “Drone.cs”.
     internal class Drone
     {
         private string client_Name;
@@ -20,9 +23,8 @@ namespace Icarus_Service_App
             drone_Model = "";
             service_Problem = "";
             service_Cost = 0;
-        service_Tag = 100;
+            service_Tag = 100;
         }
-        
         public void SetName(string aClientName)
         {
             client_Name=aClientName;
@@ -53,7 +55,7 @@ namespace Icarus_Service_App
         }
         public double GetCost()
         {
-            return service_Cost = Math.Round(service_Cost,2);
+            return service_Cost = Math.Round(service_Cost,1);
         }
         public void SetTag(int aServiceTag)
         {

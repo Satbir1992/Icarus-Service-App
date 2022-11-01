@@ -1,9 +1,14 @@
 ﻿using Microsoft.VisualBasic;
 using Syncfusion.Windows.Shared;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -30,54 +35,60 @@ namespace Icarus_Service_App
         {
             InitializeComponent();
         }
+        //6.2	Create a global List<T> of type Drone called “FinishedList”. 
+        //6.3	Create a global Queue<T> of type Drone called “RegularService”.
+        //6.4	Create a global Queue<T> of type Drone called “ExpressService”.
         List<Drone> finishedList = new List<Drone>();
         Queue<Drone> expressQueue = new Queue<Drone>();
         Queue<Drone> regularQueue = new Queue<Drone>();
-        
-        
-        
-       
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            
-        }
+        List<int> tagsaver = new();
 
+        //6.5	Create a button method called “AddNewItem” that will add a new service item to a Queue<> based on the priority.
+        //Use TextBoxes for the Client Name, Drone Model, Service Problem and Service Cost.
+        //Use a numeric up/down control for the Service Tag. The new service item will be added to the
+        //appropriate Queue based on the Priority radio button.
+        #region Add Drone 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
         if(!string.IsNullOrEmpty(TextBoxName.Text) && !string.IsNullOrEmpty(TextBoxModel.Text)
                 &&!string.IsNullOrEmpty(TextBoxProblem.Text) &&!string.IsNullOrEmpty(TextBoxCost.Text) && 
-                !string.IsNullOrEmpty(GetServicePriority()))
+                !string.IsNullOrEmpty(GetServicePriority()))//Checking For textboxes empty or null values
             {
-            try
-             {
-            Drone addDrone = new Drone();
-            addDrone.SetName(TextBoxName.Text);
-            addDrone.SetProblem(TextBoxProblem.Text);
-            addDrone.SetModel(TextBoxModel.Text);
-            addDrone.SetCost(Convert.ToDouble(TextBoxCost.Text));
-            addDrone.SetTag(Convert.ToInt32(upDown.Value));
-            upDown.Value = addDrone.GetTag()+TagIncrement();
-            if(GetServicePriority().Equals("Express"))
-            {
-                addDrone.SetCost(addDrone.GetCost()+(addDrone.GetCost()*15)/100);
-                expressQueue.Enqueue(addDrone);
-                DisplayExpressQueue();
-            }
-            else if(GetServicePriority().Equals("Regular")) 
-            {
-                regularQueue.Enqueue(addDrone);
-                DisplayRegularQueue();
-            }
-            else
-            {
-                    MessageBar.Text = "Please Select the Service Type";
-            }
-            ClearTextBox();
-            MessageBar.Text = "Drone Has been added Successfully";
-        }
-        catch(Exception)
+            if(duplicateTag(Convert.ToInt32(upDown.Value)).Equals(false))// restrict duplicate tag entry
                 {
-                    MessageBar.Text = "Something Went Wrong Please Try Again";
+                 try
+                     {
+                      Drone addDrone = new Drone();
+                      addDrone.SetName(TextBoxName.Text);
+                      addDrone.SetProblem(TextBoxProblem.Text);
+                      addDrone.SetModel(TextBoxModel.Text);
+                      addDrone.SetCost(Convert.ToDouble(TextBoxCost.Text));
+                      addDrone.SetTag(Convert.ToInt32(upDown.Value));
+                      tagsaver.Add(addDrone.GetTag());
+                      upDown.Value = addDrone.GetTag()+TagIncrement();// Using Tag Increment
+                      if(GetServicePriority().Equals("Express"))
+                        {
+                      //6.6	Before a new service item is added to the Express Queue the service cost must be increased by 15%.
+                        addDrone.SetCost(addDrone.GetCost()+(addDrone.GetCost()*15)/100);//if express increasing cost by 15%
+                        expressQueue.Enqueue(addDrone);
+                        DisplayExpressQueue();
+                        }
+                      if(GetServicePriority().Equals("Regular")) 
+                        {
+                        regularQueue.Enqueue(addDrone);
+                        DisplayRegularQueue();
+                        }
+                        ClearTextBox();
+                        MessageBar.Text = "Drone Has been added Successfully";
+                      }
+                 catch(Exception)
+                     {
+                     MessageBar.Text = "Something Went Wrong Please Try Again";
+                     }
+                }
+                else
+                {
+                    MessageBar.Text = "Tag Value Already Exists Please Change it to proceed";
                 }
             }
             else
@@ -85,6 +96,30 @@ namespace Icarus_Service_App
                 MessageBar.Text = "All Fields are Mandotry to fill";
             }
          }
+        #endregion Add Drone
+
+        //6.7	Create a custom method called “GetServicePriority” which returns the value of the priority radio group.
+        //This method must be called inside the “AddNewItem” method before the new service item is added to a queue.
+        #region Service Priority
+        private string GetServicePriority()// Checking service option through selected radio buttons
+        {
+            string serviceType = "";
+            foreach (RadioButton rb in ServiceOption.Children.OfType<RadioButton>())
+            {
+                if (rb.IsChecked == true)
+                {
+                    serviceType = rb.Name.ToString();
+                }
+            }
+            return serviceType;
+
+        }
+        #endregion Service Priority
+
+        //6.8	Create a custom method that will display all the elements in the RegularService queue.
+        //The display must use a List View and with appropriate column headers.
+        //6.9	Create a custom method that will display all the elements in the ExpressService queue.
+        //The display must use a List View and with appropriate column headers.
 
         #region Display
         public void DisplayExpressQueue()
@@ -95,7 +130,7 @@ namespace Icarus_Service_App
             {
                 foreach (Drone information in expressQueue)
                 {
-                    var row = new
+                    var row = new// Displaying in queue and display binding defined in Xaml file
                     {
                         client_Name = information.GetName(),
                         drone_Model = information.GetModel(),
@@ -110,7 +145,6 @@ namespace Icarus_Service_App
             {
                 MessageBar.Text = "Something Went Wrong Please Try Again";
             }
-          
         }
         public void DisplayRegularQueue()
         {
@@ -119,8 +153,8 @@ namespace Icarus_Service_App
             {
 
             foreach (Drone drone in regularQueue)
-            {
-                var row = new
+                {
+                var row = new  //Displaying in queue and display binding defined in Xaml file
                 {
                     client_Name = drone.GetName(),
                     drone_Model = drone.GetModel(),
@@ -136,7 +170,7 @@ namespace Icarus_Service_App
                 MessageBar.Text = "Something Went Wrong Please Try Again";
             }
         }
-        public void DisplayList()
+        public void DisplayList()// Display of finished List
         {
             FinishedListBox.Items.Clear();
             foreach(var serviceComlpeted in finishedList)
@@ -145,25 +179,96 @@ namespace Icarus_Service_App
                     + serviceComlpeted.GetCost());  
             }
         }
-           
+
         #endregion Display
 
-        #region Service Priority
-        private string GetServicePriority()
+        //6.10	Create a custom keypress method to ensure the Service Cost textbox can only accept a double value with one decimal point.
+        #region Service Cost one Decimal 
+        private void TextBoxCost_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            string serviceType = "";
-            foreach(RadioButton rb in ServiceOption.Children.OfType<RadioButton>())
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
             {
-                if(rb.IsChecked == true)
+                e.Handled = false;
+                int decPointIndex = TextBoxCost.Text.IndexOf('.');
+                if (decPointIndex > 0 && ((TextBoxCost.Text.Length - (decPointIndex + 1)) >= 1))
                 {
-                serviceType = rb.Name.ToString();
+                    TextBoxCost.Text = TextBoxCost.Text.Substring(0, decPointIndex + 2);
+                    upDown.Focus();
                 }
             }
-            return serviceType;
+            else
+            {
+                e.Handled = true;
+                MessageBar.Text = "Else Statement";
+            }
+        }
+        #endregion Service Cost Two Decimal
+
+        //6.11	Create a custom method to increment the service tag control,
+        //this method must be called inside the “AddNewItem” method before the new service item is added to a queue.
+        #region Tag Increment
+        public int TagIncrement()
+        {
+            return 10;
+        }
+        #endregion Tag Increment
+
+        //6.12	Create a mouse click method for the regular service ListView that will display the Client Name and Service Problem in the related textboxes.
+        //6.13	Create a mouse click method for the express service ListView that will display the Client Name and Service Problem in the related textboxes
+        #region Selected listview Item Display
+        private void ListViewExpress_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+                if (ListViewExpress.SelectedItems.Count!=0)
+                {
+                    try
+                    {
+                        int select = ListViewExpress.SelectedIndex;
+                        TextBoxName.Text = expressQueue.ElementAt(select).GetName();
+                        TextBoxProblem.Text = expressQueue.ElementAt(select).GetProblem();
+                        ListViewExpress.SelectedIndex = -1;
+                   }
+                    catch (Exception)
+                    {
+                        MessageBar.Text = "Something went wrong please try again";
+                    }
+                }
+                else
+                {
+                    MessageBar.Text = "Please Select from queue to Get Details";
+                }
+            }
+        
+        private void ListViewRegular_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           if (ListViewRegular.SelectedItems.Count != 0)
+                {
+                try
+                {
+                    int selected = ListViewRegular.SelectedIndex;
+                    TextBoxName.Text = regularQueue.ElementAt(selected).GetName();
+                    TextBoxProblem.Text = regularQueue.ElementAt(selected).GetProblem();
+                    ListViewRegular.SelectedIndex = -1; 
+                }
+                catch(Exception)
+                {
+                    MessageBar.Text = "Something went wrong please try again";
+                }
+                }
+                else
+                {
+                    MessageBar.Text = "Please Select from the queue to get deatils";
+                }
             
         }
-        #endregion Service Priority
+        #endregion Selected listview item display
 
+        //6.14	Create a button click method that will remove a service item from the regular ListView and dequeue the regular service
+        //Queue<T> data structure. The dequeued item must be added to the List<T> and displayed in the ListBox for finished service items.
+        //6.15	Create a button click method that will remove a service item from the express ListView and dequeue the express service
+        //Queue<T> data structure.The dequeued item must be added to the List<T> and displayed in the ListBox for finished service items.
+
+        #region Service Completed
         private void ButtonExpress1_Click(object sender, RoutedEventArgs e)
         {
             if(expressQueue.Count != 0)
@@ -172,7 +277,7 @@ namespace Icarus_Service_App
                 {
 
                 ClearTextBox();
-                finishedList.Add(expressQueue.Dequeue());
+                finishedList.Add(expressQueue.Dequeue());//dequeueing the service from queue and sending it to finished list 
                 ListViewExpress.Items.RemoveAt(0);
                 DisplayList();   
                 }
@@ -191,7 +296,7 @@ namespace Icarus_Service_App
                 try
                 {
                     ClearTextBox();
-                    finishedList.Add(regularQueue.Dequeue());
+                    finishedList.Add(regularQueue.Dequeue());//dequeueing the service from queue and sending it to finished list
                     ListViewRegular.Items.RemoveAt(0);
                     DisplayList();
                 }
@@ -199,10 +304,39 @@ namespace Icarus_Service_App
                 {
                     MessageBar.Text = "Something Went Wrong Please Try Again";
                 }
-               
             }
             DisplayRegularQueue();
         }
+        #endregion Service Completed
+
+        //6.16	Create a double mouse click method that will delete a service item from the finished listbox and remove the same item from the List<T>.
+        #region Finished List
+        private void FinishedListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)//double click to remove the drone from the service list
+        {
+            if (FinishedListBox.SelectedItems.Count != 0)
+            {
+                try
+                {
+                    int currentItem = FinishedListBox.SelectedIndex;
+                    finishedList.RemoveAt(currentItem);
+                    DisplayList();
+                }
+                catch (Exception)
+                {
+                    MessageBar.Text = "Something Went Wrong Please Try Again";
+                }
+            }
+            else
+            {
+                MessageBar.Text = "Please Select From the List to remove from Service List";
+            }
+
+        }
+
+        #endregion Finished List
+
+        //6.17	Create a custom method that will clear all the textboxes after each service item has been added.
+        #region Clear TextBoxes zone
         public void ClearTextBox()
         {
             TextBoxName.Clear();
@@ -211,108 +345,25 @@ namespace Icarus_Service_App
             TextBoxModel.Clear();
         }
 
-       private void FinishedListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        #endregion Clear TextBoxes zone
+
+        #region utilities
+        private bool duplicateTag(int newTag)
         {
-            if(FinishedListBox.SelectedItems.Count != 0)
+            bool tagCheck = false;
+            if(tagsaver.Exists(x=>x.Equals(newTag)))
             {
-                int currentItem = FinishedListBox.SelectedIndex;
-                finishedList.RemoveAt(currentItem);
-                DisplayList();
+                tagCheck = true;
             }
             else
             {
-                MessageBar.Text = "Please Select From the List to remove from Service List";
+                tagCheck = false;
             }
-            
+            return tagCheck;
         }
 
-        private void ListViewExpress_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if(ButtonExpress1.IsFocused ==true)
-            {
-                ClearTextBox();
-            }
-            else
-            {
-                if(ListViewExpress.SelectedItems.Count != 0)
-                {
+        #endregion utilities
 
-                try
-                {
-                int select = ListViewExpress.SelectedIndex;
-                TextBoxName.Text = expressQueue.ElementAt(select).GetName();
-                TextBoxProblem.Text = expressQueue.ElementAt(select).GetProblem();
-                }
-                catch(Exception)
-                {
-                    MessageBar.Text = "Something went wrong please try again";
-                }
-                }
-                else
-                {
-                    MessageBar.Text = "Please Select from queue to Get Details";
-                }
-            }
-            
-        }
-
-        private void ListViewRegular_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if(ButtonRegular1.IsFocused==true)
-            {
-                ClearTextBox();
-            }
-            else
-            {
-                if(ListViewRegular.SelectedItems.Count != 0)
-                {
-
-                int selected = ListViewRegular.SelectedIndex;
-                TextBoxName.Text = regularQueue.ElementAt(selected).GetName();
-                TextBoxProblem.Text = regularQueue.ElementAt(selected).GetProblem();
-                }
-                else
-                {
-                    MessageBar.Text = "Please Select from the queue to get deatils";
-                }
-            }
-        }
-        public int TagIncrement()
-        {
-        return 10;
-        }
-
-
-        private void TextBoxCost_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-
-
-
-
-            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
-            {
-                e.Handled = false;
-                string inText = TextBoxCost.Text; //My Input TextBox from XAML
-                int decPointIndex = inText.IndexOf('.');
-                if (decPointIndex > 0 && ((inText.Length - (decPointIndex + 1)) >= 2))
-                {
-
-                    TextBoxCost.Text = inText.Substring(0, decPointIndex + 3);
-                    upDown.Focus();
-                    
-                }
-                
-            }
-               
-
-            else
-            {
-                e.Handled = true;
-                MessageBar.Text = "Else Statement";
-            }
-        }
         
     }
-
 }
