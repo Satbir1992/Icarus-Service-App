@@ -64,7 +64,7 @@
             <Label x:Name="LabelCost" Content="Service Cost:" FontSize="14" Foreground="#FFFBFBFB" FontWeight="Bold" Margin="243,-7,633,505"/>
             <TextBox x:Name="TextBoxCost" Margin="247,19,527,478" PreviewTextInput="TextBoxCost_PreviewTextInput"  />
             <Label x:Name="LabelTag" Content="Service Tag:" FontSize="14" Foreground="#FFFBFBFB" FontWeight="Bold" Margin="241,43,635,455"/>
-            <syncfusion:UpDown Name="upDown" AllowEdit="False" MinValue="100" MaxValue="999" IsScrollingOnCircle="False" Value="100" Step="10" NumberDecimalDigits="0" Margin="247,67,527,432"/>
+            <syncfusion:UpDown Name="upDown" AllowEdit="False" MinValue="100" MaxValue="900" IsScrollingOnCircle="False" Value="100" Step="10" NumberDecimalDigits="0" Margin="247,67,527,432"/>
             <Button x:Name="ButtonAdd" Content="Add Drone for Service" HorizontalAlignment="Left" Margin="485,17,0,0" VerticalAlignment="Top" Height="73" Width="157" FontSize="14" FontWeight="Bold" Click="ButtonAdd_Click"/>
             <Button x:Name="ButtonExpress1" Content="Express Service Completed" HorizontalAlignment="Left" Margin="806,70,0,0" VerticalAlignment="Top" Height="22" FontSize="14" Width="185" FontWeight="Bold" Click="ButtonExpress1_Click"/>
             <Button x:Name="ButtonRegular1" Content="Regular Service Completed" HorizontalAlignment="Left" Margin="806,298,0,0" VerticalAlignment="Top" Height="22" FontSize="14" Width="185" FontWeight="Bold" Click="ButtonRegular1_Click"/>

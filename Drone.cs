@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,8 +17,8 @@ namespace Icarus_Service_App
         private string service_Problem;
         private double service_Cost;
         private int service_Tag;
-
-       public Drone()
+        TextInfo titleCase = new CultureInfo("en-US", false).TextInfo;
+        public Drone()
         {
             client_Name = "";
             drone_Model = "";
@@ -31,7 +32,8 @@ namespace Icarus_Service_App
         }
         public string GetName()
         {
-            return client_Name;
+            
+            return titleCase.ToTitleCase(client_Name.ToLower());
         }
         public void SetModel(string aDroneModel)
         {
@@ -47,7 +49,7 @@ namespace Icarus_Service_App
         }
         public string GetProblem()
         {
-            return service_Problem;
+            return titleCase.ToTitleCase(service_Problem.ToLower());
         }
         public void SetCost(double aServiceCost)
         {

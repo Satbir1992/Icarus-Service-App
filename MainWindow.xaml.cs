@@ -21,8 +21,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
-
+//Satbir Singh
+// Student ID 30048567
+//Date 01/11/2022
+//6.18	All code is required to be adequately commented.
+//Map the programming criteria and features to your code/methods by adding comments above the method signatures. 
 
 namespace Icarus_Service_App
 {
@@ -54,18 +57,16 @@ namespace Icarus_Service_App
                 &&!string.IsNullOrEmpty(TextBoxProblem.Text) &&!string.IsNullOrEmpty(TextBoxCost.Text) && 
                 !string.IsNullOrEmpty(GetServicePriority()))//Checking For textboxes empty or null values
             {
-            if(duplicateTag(Convert.ToInt32(upDown.Value)).Equals(false))// restrict duplicate tag entry
-                {
-                 try
+             try
                      {
                       Drone addDrone = new Drone();
                       addDrone.SetName(TextBoxName.Text);
                       addDrone.SetProblem(TextBoxProblem.Text);
                       addDrone.SetModel(TextBoxModel.Text);
                       addDrone.SetCost(Convert.ToDouble(TextBoxCost.Text));
-                      addDrone.SetTag(Convert.ToInt32(upDown.Value));
-                      tagsaver.Add(addDrone.GetTag());
-                      upDown.Value = addDrone.GetTag()+TagIncrement();// Using Tag Increment
+                      addDrone.SetTag(TagIncrement());// Using Tag Increment
+                    tagsaver.Add(addDrone.GetTag());
+                      upDown.Value = addDrone.GetTag();
                       if(GetServicePriority().Equals("Express"))
                         {
                       //6.6	Before a new service item is added to the Express Queue the service cost must be increased by 15%.
@@ -85,11 +86,6 @@ namespace Icarus_Service_App
                      {
                      MessageBar.Text = "Something Went Wrong Please Try Again";
                      }
-                }
-                else
-                {
-                    MessageBar.Text = "Tag Value Already Exists Please Change it to proceed";
-                }
             }
             else
             {
@@ -200,7 +196,6 @@ namespace Icarus_Service_App
             else
             {
                 e.Handled = true;
-                MessageBar.Text = "Else Statement";
             }
         }
         #endregion Service Cost Two Decimal
@@ -210,7 +205,21 @@ namespace Icarus_Service_App
         #region Tag Increment
         public int TagIncrement()
         {
-            return 10;
+            
+            int tagCheck = Convert.ToInt32(upDown.Value);
+            if(tagCheck>=100 && tagCheck<=900 && tagsaver.Exists(x=>x.Equals(tagCheck)))//checking for duplicate tags and assiging the unique value 
+            {
+                do
+                {
+                    tagCheck += 10;
+                }
+                while (tagsaver.Exists(x => x.Equals(tagCheck)));
+            }
+            else
+            {
+                MessageBar.Text = "Invalid Tag Value please check again";
+            }
+            return tagCheck;
         }
         #endregion Tag Increment
 
@@ -219,7 +228,7 @@ namespace Icarus_Service_App
         #region Selected listview Item Display
         private void ListViewExpress_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                if (ListViewExpress.SelectedItems.Count!=0)
+                if (ListViewExpress.SelectedItems.Count != 0)
                 {
                     try
                     {
@@ -233,11 +242,7 @@ namespace Icarus_Service_App
                         MessageBar.Text = "Something went wrong please try again";
                     }
                 }
-                else
-                {
-                    MessageBar.Text = "Please Select from queue to Get Details";
-                }
-            }
+        }
         
         private void ListViewRegular_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -255,11 +260,6 @@ namespace Icarus_Service_App
                     MessageBar.Text = "Something went wrong please try again";
                 }
                 }
-                else
-                {
-                    MessageBar.Text = "Please Select from the queue to get deatils";
-                }
-            
         }
         #endregion Selected listview item display
 
@@ -275,8 +275,9 @@ namespace Icarus_Service_App
             {
                 try
                 {
-
                 ClearTextBox();
+                upDown.Value = expressQueue.ElementAt(0).GetTag();
+                tagsaver.Remove(Convert.ToInt32(upDown.Value));
                 finishedList.Add(expressQueue.Dequeue());//dequeueing the service from queue and sending it to finished list 
                 ListViewExpress.Items.RemoveAt(0);
                 DisplayList();   
@@ -286,9 +287,12 @@ namespace Icarus_Service_App
                     MessageBar.Text = "Something Went Wrong Please Try Again";
                 }
             }
+            else
+            {
+                MessageBar.Text = "nothing to remove";
+            }
             DisplayExpressQueue();
         }
-
         private void ButtonRegular1_Click(object sender, RoutedEventArgs e)
         {
             if(regularQueue.Count != 0)
@@ -296,6 +300,8 @@ namespace Icarus_Service_App
                 try
                 {
                     ClearTextBox();
+                    upDown.Value = regularQueue.ElementAt(0).GetTag();
+                    tagsaver.Remove(Convert.ToInt32(upDown.Value));
                     finishedList.Add(regularQueue.Dequeue());//dequeueing the service from queue and sending it to finished list
                     ListViewRegular.Items.RemoveAt(0);
                     DisplayList();
@@ -304,6 +310,10 @@ namespace Icarus_Service_App
                 {
                     MessageBar.Text = "Something Went Wrong Please Try Again";
                 }
+            }
+            else
+            {
+                MessageBar.Text = "nothing to remove";
             }
             DisplayRegularQueue();
         }
@@ -346,24 +356,5 @@ namespace Icarus_Service_App
         }
 
         #endregion Clear TextBoxes zone
-
-        #region utilities
-        private bool duplicateTag(int newTag)
-        {
-            bool tagCheck = false;
-            if(tagsaver.Exists(x=>x.Equals(newTag)))
-            {
-                tagCheck = true;
-            }
-            else
-            {
-                tagCheck = false;
-            }
-            return tagCheck;
-        }
-
-        #endregion utilities
-
-        
     }
 }
