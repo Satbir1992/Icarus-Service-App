@@ -1,26 +1,12 @@
-﻿using Microsoft.VisualBasic;
-using Syncfusion.Windows.Shared;
+﻿using Syncfusion.Windows.Shared;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Reflection.PortableExecutable;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 //Satbir Singh
 // Student ID 30048567
 //Date 01/11/2022
@@ -44,7 +30,7 @@ namespace Icarus_Service_App
         List<Drone> finishedList = new List<Drone>();
         Queue<Drone> expressQueue = new Queue<Drone>();
         Queue<Drone> regularQueue = new Queue<Drone>();
-        List<int> tagsaver = new();
+        List<int> tagsaver = new();//Saving Tag values in this List
 
         //6.5	Create a button method called “AddNewItem” that will add a new service item to a Queue<> based on the priority.
         //Use TextBoxes for the Client Name, Drone Model, Service Problem and Service Cost.
@@ -58,34 +44,34 @@ namespace Icarus_Service_App
                 !string.IsNullOrEmpty(GetServicePriority()))//Checking For textboxes empty or null values
             {
              try
-                     {
-                      Drone addDrone = new Drone();
-                      addDrone.SetName(TextBoxName.Text);
-                      addDrone.SetProblem(TextBoxProblem.Text);
-                      addDrone.SetModel(TextBoxModel.Text);
-                      addDrone.SetCost(Convert.ToDouble(TextBoxCost.Text));
-                      addDrone.SetTag(TagIncrement());// Using Tag Increment
-                    tagsaver.Add(addDrone.GetTag());
-                      upDown.Value = addDrone.GetTag();
-                      if(GetServicePriority().Equals("Express"))
-                        {
+                {
+                 Drone addDrone = new Drone();
+                 addDrone.SetName(TextBoxName.Text);
+                 addDrone.SetProblem(TextBoxProblem.Text);
+                 addDrone.SetModel(TextBoxModel.Text);
+                 addDrone.SetCost(Convert.ToDouble(TextBoxCost.Text));
+                 addDrone.SetTag(TagIncrement());// Using Tag Increment
+                 tagsaver.Add(addDrone.GetTag());
+                 upDown.Value = addDrone.GetTag();
+                    if (GetServicePriority().Equals("Express"))
+                    {
                       //6.6	Before a new service item is added to the Express Queue the service cost must be increased by 15%.
                         addDrone.SetCost(addDrone.GetCost()+(addDrone.GetCost()*15)/100);//if express increasing cost by 15%
                         expressQueue.Enqueue(addDrone);
                         DisplayExpressQueue();
-                        }
-                      if(GetServicePriority().Equals("Regular")) 
-                        {
+                    }
+                    if(GetServicePriority().Equals("Regular")) 
+                    {
                         regularQueue.Enqueue(addDrone);
                         DisplayRegularQueue();
-                        }
-                        ClearTextBox();
-                        MessageBar.Text = "Drone Has been added Successfully";
-                      }
-                 catch(Exception)
-                     {
-                     MessageBar.Text = "Something Went Wrong Please Try Again";
-                     }
+                    }
+                    ClearTextBox();
+                    MessageBar.Text = "Drone Has been added Successfully";
+                    }
+                catch (Exception)
+                {
+                    MessageBar.Text = "Something Went Wrong Please Try Again";
+                }
             }
             else
             {
@@ -108,7 +94,6 @@ namespace Icarus_Service_App
                 }
             }
             return serviceType;
-
         }
         #endregion Service Priority
 
@@ -120,7 +105,6 @@ namespace Icarus_Service_App
         #region Display
         public void DisplayExpressQueue()
         {
-
            ListViewExpress.Items.Clear();
             try
             {
@@ -147,7 +131,6 @@ namespace Icarus_Service_App
             ListViewRegular.Items.Clear();
             try
             {
-
             foreach (Drone drone in regularQueue)
                 {
                 var row = new  //Displaying in queue and display binding defined in Xaml file
@@ -175,7 +158,6 @@ namespace Icarus_Service_App
                     + serviceComlpeted.GetCost());  
             }
         }
-
         #endregion Display
 
         //6.10	Create a custom keypress method to ensure the Service Cost textbox can only accept a double value with one decimal point.
@@ -185,17 +167,20 @@ namespace Icarus_Service_App
             var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
             if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
             {
+                MessageBar.Text = "";
                 e.Handled = false;
                 int decPointIndex = TextBoxCost.Text.IndexOf('.');
                 if (decPointIndex > 0 && ((TextBoxCost.Text.Length - (decPointIndex + 1)) >= 1))
                 {
                     TextBoxCost.Text = TextBoxCost.Text.Substring(0, decPointIndex + 2);
                     upDown.Focus();
+                    
                 }
             }
             else
             {
                 e.Handled = true;
+                MessageBar.Text = "Input Not Allowed";
             }
         }
         #endregion Service Cost Two Decimal
@@ -203,11 +188,11 @@ namespace Icarus_Service_App
         //6.11	Create a custom method to increment the service tag control,
         //this method must be called inside the “AddNewItem” method before the new service item is added to a queue.
         #region Tag Increment and duplicate values
-        public int TagIncrement()
+        public int TagIncrement()//This method increasing the tag value by 10 and also taking care of duplicates 
         {
             
             int tagCheck = Convert.ToInt32(upDown.Value);
-            if(tagCheck>=100 && tagCheck<=900 && tagsaver.Exists(x=>x.Equals(tagCheck)))//checking for duplicate tags and assiging the unique value 
+            if(tagCheck >= 100 && tagCheck <= 900 && tagsaver.Exists(x=>x.Equals(tagCheck)))//checking for duplicate tags and assiging the unique value 
             {
                 do
                 {
@@ -342,7 +327,6 @@ namespace Icarus_Service_App
             }
 
         }
-
         #endregion Finished List
 
         //6.17	Create a custom method that will clear all the textboxes after each service item has been added.
