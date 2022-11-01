@@ -171,7 +171,7 @@ namespace Icarus_Service_App
             FinishedListBox.Items.Clear();
             foreach(var serviceComlpeted in finishedList)
             {
-                FinishedListBox.Items.Add("Client Name: "+serviceComlpeted.GetName() + "\t\t Amount Due: " 
+                FinishedListBox.Items.Add("Client Name:  "+serviceComlpeted.GetName() + " \tAmount Due:  " 
                     + serviceComlpeted.GetCost());  
             }
         }
@@ -354,7 +354,6 @@ namespace Icarus_Service_App
             TextBoxProblem.Clear();
             TextBoxModel.Clear();
         }
-
         #endregion Clear TextBoxes zone
     }
 }
