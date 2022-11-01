@@ -202,7 +202,7 @@ namespace Icarus_Service_App
 
         //6.11	Create a custom method to increment the service tag control,
         //this method must be called inside the “AddNewItem” method before the new service item is added to a queue.
-        #region Tag Increment
+        #region Tag Increment and duplicate values
         public int TagIncrement()
         {
             
@@ -221,7 +221,7 @@ namespace Icarus_Service_App
             }
             return tagCheck;
         }
-        #endregion Tag Increment
+        #endregion Tag Increment and duplicate values
 
         //6.12	Create a mouse click method for the regular service ListView that will display the Client Name and Service Problem in the related textboxes.
         //6.13	Create a mouse click method for the express service ListView that will display the Client Name and Service Problem in the related textboxes
