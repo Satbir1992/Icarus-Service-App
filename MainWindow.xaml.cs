@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 //Satbir Singh
-// Student ID 30048567
+//Student ID 30048567
 //Date 01/11/2022
 //6.18	All code is required to be adequately commented.
 //Map the programming criteria and features to your code/methods by adding comments above the method signatures. 

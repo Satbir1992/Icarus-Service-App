@@ -29,7 +29,7 @@
             </TextBox>
         </StackPanel>
         <Grid Margin="0,171,0,-645" Background="#0f0f2d">
-            <ListView x:Name="ListViewExpress" Margin="2,100,5,232" SelectionChanged="ListViewExpress_SelectionChanged" >
+            <ListView x:Name="ListViewExpress" ToolTip="Select any to see name and Service Problem" Margin="2,100,5,232" SelectionChanged="ListViewExpress_SelectionChanged" >
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Client Name" DisplayMemberBinding="{Binding Path= client_Name}" Width="200" />
@@ -42,7 +42,7 @@
             </ListView>
             <Label x:Name="LabelExpQueue" Content="Express Service Queue" FontSize="14" Foreground="#FFFBFBFB" FontWeight="Bold" Margin="3,73,831,428"/>
             <Label x:Name="LabelRegQueue" Content="Regular Service Queue" FontSize="14" Foreground="#FFFBFBFB" FontWeight="Bold" Margin="0,295,834,199"/>
-            <ListView x:Name="ListViewRegular" Margin="2,322,5,10" SelectionChanged="ListViewRegular_SelectionChanged">
+            <ListView x:Name="ListViewRegular" ToolTip="Select any to see name and Service Problem" Margin="2,322,5,10" SelectionChanged="ListViewRegular_SelectionChanged">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Client_Name" DisplayMemberBinding="{Binding Path= client_Name}" Width="200"/>
@@ -65,9 +65,9 @@
             <TextBox x:Name="TextBoxCost" Margin="247,19,527,478" PreviewTextInput="TextBoxCost_PreviewTextInput"  />
             <Label x:Name="LabelTag" Content="Service Tag:" FontSize="14" Foreground="#FFFBFBFB" FontWeight="Bold" Margin="241,43,635,455"/>
             <syncfusion:UpDown Name="upDown" AllowEdit="False" MinValue="100" MaxValue="900" IsScrollingOnCircle="False" Value="100" Step="10" NumberDecimalDigits="0" Margin="247,67,527,432"/>
-            <Button x:Name="ButtonAdd" Content="Add Drone for Service" HorizontalAlignment="Left" Margin="485,17,0,0" VerticalAlignment="Top" Height="73" Width="157" FontSize="14" FontWeight="Bold" Click="ButtonAdd_Click"/>
-            <Button x:Name="ButtonExpress1" Content="Express Service Completed" HorizontalAlignment="Left" Margin="806,70,0,0" VerticalAlignment="Top" Height="22" FontSize="14" Width="185" FontWeight="Bold" Click="ButtonExpress1_Click"/>
-            <Button x:Name="ButtonRegular1" Content="Regular Service Completed" HorizontalAlignment="Left" Margin="806,298,0,0" VerticalAlignment="Top" Height="22" FontSize="14" Width="185" FontWeight="Bold" Click="ButtonRegular1_Click"/>
+            <Button x:Name="ButtonAdd" ToolTip="Click To Add For Service" Content="Add Drone for Service" HorizontalAlignment="Left" Margin="485,17,0,0" VerticalAlignment="Top" Height="73" Width="157" FontSize="14" FontWeight="Bold" Click="ButtonAdd_Click"/>
+            <Button x:Name="ButtonExpress1" ToolTip="Click To Remove First Item From Service" Content="Express Service Completed" HorizontalAlignment="Left" Margin="806,70,0,0" VerticalAlignment="Top" Height="22" FontSize="14" Width="185" FontWeight="Bold" Click="ButtonExpress1_Click"/>
+            <Button x:Name="ButtonRegular1" ToolTip="Click To Remove First Item From Service" Content="Regular Service Completed" HorizontalAlignment="Left" Margin="806,298,0,0" VerticalAlignment="Top" Height="22" FontSize="14" Width="185" FontWeight="Bold" Click="ButtonRegular1_Click"/>
             <StatusBar x:Name="StatusMessage" Margin="647,18,5,467">
                 <StatusBarItem>
                     <TextBlock Text="Message:" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Left" Height="27">
@@ -82,7 +82,7 @@
         </Grid>
         <Grid Background="#0f0f2d" Margin="480,48,0,-119">
             <Label x:Name="LabelListBox" Content="Service Completed" FontSize="14" Foreground="#FFFBFBFB" FontWeight="Bold" Margin="0,0,361,95"/>
-            <ListBox x:Name="FinishedListBox" Margin="5,28,5,0" MouseDoubleClick="FinishedListBox_MouseDoubleClick"/>
+            <ListBox x:Name="FinishedListBox" ToolTip="Double Click To Remove Any Service Item" Margin="5,28,5,0" MouseDoubleClick="FinishedListBox_MouseDoubleClick"/>
 
         </Grid>
     </Grid>
